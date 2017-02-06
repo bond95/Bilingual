@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Bilingual</title>
+	<script type="text/javascript" src="{% static "js/app.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/materialize.min.js" %}"></script>
+	<link rel="stylesheet" type="text/css" href="{% static "css/materialize.min.css" %}">
+</head>
+<body>
+<div class="menu">
+	<nav>
+		<div class="nav-wrapper">
+			<a href="/" class="brand-logo">Bilingual</a>
+			<ul id="nav-mobile" class="right hide-on-med-and-down">
+				<li><a href="/">Main</a></li>
+				<li><a href="/add">Add</a></li>
+			</ul>
+		</div>
+	</nav>
+</div>
+<div class="content">
+	{% block content %}
+	{% endblock %}
+</div>
+</body>
+</html>

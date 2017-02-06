@@ -1,0 +1,33 @@
+{
+  "name": "bilingual",
+  "version": "1.0.0",
+  "description": "Making bilingual books",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src -d lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bond95/TwoLangBuilder.git"
+  },
+  "author": "Bohdan Iakymets",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bond95/TwoLangBuilder/issues"
+  },
+  "homepage": "https://github.com/bond95/TwoLangBuilder#readme",
+  "dependencies": {
+    "jquery": "^3.1.1",
+    "materialize-css": "^0.98.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-loader": "^6.2.10",
+    "babel-preset-env": "^1.1.8",
+    "babel-preset-react": "^6.22.0",
+    "copy-webpack-plugin": "^4.0.1",
+    "webpack": "^2.2.1"
+  }
+}
