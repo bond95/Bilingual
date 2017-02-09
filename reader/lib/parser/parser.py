@@ -33,8 +33,9 @@ class BilingualPraser():
 		self.nonsynced_sentences = {'first': [], 'second': [], 'keywords': []}
 
 	def parse(self):
-		par1 = parSplit(self.file1.readlines())
-		par2 = parSplit(self.file2.readlines())
+		par1 = self.parSplit(self.file1.readlines())
+		par2 = self.parSplit(self.file2.readlines())
+		# print(par1)
 		self.firstPhase(par1, par2)
 		self.secondPhase()
 		self.splitSentences()
@@ -60,6 +61,7 @@ class BilingualPraser():
 		curr_par = 0
 		par_whitespace = False
 		for i in range(0, len(file_lines)):
+			file_lines[i] = file_lines[i].decode('unicode_escape')
 			if file_lines[i][0] == ' ' \
 					or file_lines[i][0] == '\t' \
 					or file_lines[i][0] == '\n':
@@ -78,6 +80,7 @@ class BilingualPraser():
 				paragraphs.append('')
 				curr_par = len(paragraphs)
 			par1_whitespace = False
+			print(file_lines[i])
 			paragraphs[curr_par - 1] += ' ' + file_lines[i]
 		return paragraphs
 
@@ -141,6 +144,7 @@ class BilingualPraser():
 		self.getSentence('first')
 		self.getSentence('second')
 		sentence_count = []
+		print(self.paragraphLinks)
 		for par in self.paragraphLinks:
 			if 'first_sentences' in par.keys():
 				sentence_count.append(len(par['first_sentences']))
@@ -191,7 +195,7 @@ class BilingualPraser():
 			insert_body = {}
 			insert_body['word_' + lang1] = word_not_translated
 			insert_body['word_' + lang2] = word_translated
-			resp = es.index(index='languages', doc_type='translates', body=insert_body)
+			resp = self.es.index(index='languages', doc_type='translates', body=insert_body)
 			if resp['result'] != 'created':
 				print('Word ' + word_translated + ' was not inserted')
 		else:
@@ -239,7 +243,7 @@ class BilingualPraser():
 		for word in keyWords:
 			res = process.extractOne(word, word_array)
 			if res != None:
-				if res[1] > MIN_RATE:
+				if res[1] > self.MIN_RATE:
 					rate += res[1]
 					word_array.remove(res[0])
 
@@ -289,7 +293,7 @@ class BilingualPraser():
 				# print(keyWords)
 				if len(keyWords) > 0:
 					for i in range(0, len(keyWords)):
-						res = self.getTranslate(keyWords[i], file1_lang, self.file2_lang)
+						res = self.getTranslate(keyWords[i], self.file1_lang, self.file2_lang)
 						# print(res)
 						# print('^')
 						if res != None:
@@ -326,7 +330,7 @@ class BilingualPraser():
 				print('Length 2: ', ns_sentence2_size)
 				print('Rate 1:', rate)
 				if len(self.sentences_pair[i]['keywords1']) > 0:
-					rate1 = getSentenceRate(self.sentences_pair[i]['keywords1'], self.sentences_pair[j]['second'])
+					rate1 = self.getSentenceRate(self.sentences_pair[i]['keywords1'], self.sentences_pair[j]['second'])
 					
 					print('Rate 2:', rate1)
 					rate += rate1
@@ -344,7 +348,7 @@ class BilingualPraser():
 						j += 1
 					continue
 				else:
-					self.synced_sentences.append({'first': ' '.join(self.nonsynced_sentences['first']), 'second': ' '.join(self.nonsynced_sentences['second'])})
+					self.synced_sentences.append({'first': self.nonsynced_sentences['first'], 'second': self.nonsynced_sentences['second']})
 					self.nonsynced_sentences['first'] = []
 					self.nonsynced_sentences['second'] = []
 					self.nonsynced_sentences['keywords'] = []
@@ -365,7 +369,7 @@ class BilingualPraser():
 				break
 
 		if len(self.nonsynced_sentences['first']) > 0:
-			self.synced_sentences.append({'first': ''.join(self.nonsynced_sentences['first']), 'second': ''.join(self.nonsynced_sentences['second'])})
+			self.synced_sentences.append({'first': self.nonsynced_sentences['first'], 'second': self.nonsynced_sentences['second']})
 
 
 

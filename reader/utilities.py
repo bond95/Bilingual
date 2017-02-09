@@ -1,7 +1,9 @@
 import tempfile
+import os
 
 def handleUploadedFile(f):
-	temp_file = tempfile.mkstemp(text=True)
+	fd, temp_path = tempfile.mkstemp()
+	f_temp = os.fdopen(fd, 'wb+')
 	for chunk in f.chunks():
-		temp_file.write(chunk)
-	return temp_file
+		f_temp.write(chunk)
+	return f_temp
