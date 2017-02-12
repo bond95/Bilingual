@@ -1,5 +1,8 @@
 # Bilingual
 This web site is for creating and editing bilingual texts based on two examples in different languages.
+## Main goal 
+
+Main goal of this application is to get two same texts but in different languages and connect them sentence-by-sentence.
 ## Installation
 Required installations:
 Elasticsearch ~5.0.1
