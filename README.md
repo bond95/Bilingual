@@ -2,7 +2,7 @@
 This web site is for creating and editing bilingual texts based on two examples in different languages.
 ## Main goal 
 
-Main goal of this application is to get two same texts but in different languages and connect them sentence-by-sentence.
+Main goal of this application is to get two same texts but in different languages and connect them sentence-by-sentence. For this it use dividing text to paragraphs, then to sentences, and comparing it by a few parameters, like length of sentence, some basic words (it get words that begining with upper case, and words on beginig and end of the sentence, then looking for that word and it traslation in elasticsearch, if word is not found, than it translate word through yandex translate and save result to elasticsearch, then with a fuzzy library try to find the most similar word in second sentence, if it find similarity, then second sentence get some point), if second sentence get more then 75% points, then sentences are similar.
 ## Installation
 Required installations:
 Elasticsearch ~5.0.1
